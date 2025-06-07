@@ -1,0 +1,526 @@
+Easy. SQL (Basic)
+Revising the Select Query I
+Query all columns for all American cities in the CITY table with populations larger than 100000. The CountryCode for America is USA.
+Solución:
+SELECT * FROM CITY
+WHERE COUNTRYCODE='USA' AND POPULATION > 100000;
+
+Easy. SQL (Basic)
+Revising the Select Query II
+Query the NAME field for all American cities in the CITY table with populations larger than 120000. The CountryCode for America is USA.
+Solución:
+SELECT NAME FROM CITY WHERE COUNTRYCODE='USA' AND POPULATION >= 120000;
+
+Easy. SQL (Basic)
+Select All
+Query all columns (attributes) for every row in the CITY table.
+Solución:
+SELECT * FROM CITY;
+
+Easy. SQL (Basic)
+Select By ID
+Query all columns for a city in CITY with the ID 1661.
+Solución:
+SELECT * FROM CITY WHERE ID = 1661;
+
+Easy. SQL (Basic)
+Japanese Cities' Attributes
+Query all attributes of every Japanese city in the CITY table. The COUNTRYCODE for Japan is JPN.
+Solución:
+SELECT * FROM CITY
+WHERE COUNTRYCODE='JPN';
+
+Easy. SQL (Basic)
+Japanese Cities' Names
+Query the names of all the Japanese cities in the CITY table. The COUNTRYCODE for Japan is JPN.
+Solución:
+SELECT NAME FROM CITY
+WHERE COUNTRYCODE ='JPN';
+
+Easy. SQL (Basic)
+Weather Observation Station 1
+Query a list of CITY and STATE from the STATION table.
+Solución:
+SELECT CITY, STATE FROM STATION;
+
+Easy. SQL (Basic)
+Weather Observation Station 3
+Query a list of CITY names from STATION for cities that have an even ID number. Print the results in any order, but exclude duplicates from the answer.
+Solución:
+SELECT DISTINCT CITY FROM STATION WHERE ID % 2 = 0;
+
+Easy. SQL (Basic)
+Weather Observation Station 4
+Find the difference between the total number of CITY entries in the table and the number of distinct CITY entries in the table.
+Solución:
+SELECT COUNT(CITY)- COUNT(DISTINCT CITY)
+FROM STATION;
+
+Easy. SQL (Basic)
+Weather Observation Station 5
+Query the two cities in STATION with the shortest and longest CITY names, as well as their respective lengths (i.e.: number of characters in the name). If there is more than one smallest or largest city, choose the one that comes first when ordered alphabetically.
+Solución:
+SELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY), CITY LIMIT 1;
+SELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) DESC, CITY LIMIT 1;
+
+Easy. SQL (Basic)
+Weather Observation Station 6
+Query the list of CITY names starting with vowels (i.e., a, e, i, o, or u) from STATION. Your result cannot contain duplicates.
+Solución:
+SELECT CITY FROM STATION
+WHERE LEFT(UPPER(CITY),1) IN ('A','E','I','O','U');
+
+Easy. SQL (Basic)
+Weather Observation Station 7
+Query the list of CITY names ending with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates.
+Solución:
+SELECT DISTINCT CITY FROM STATION
+WHERE RIGHT(UPPER(CITY),1) IN('A','E','I','O','U');
+
+Easy. SQL (Basic)
+Weather Observation Station 8
+Query the list of CITY names from STATION which have vowels (i.e., a, e, i, o, and u) as both their first and last characters. Your result cannot contain duplicates.
+Solución:
+SELECT DISTINCT CITY FROM STATION
+WHERE LEFT(UPPER(CITY),1) IN('A','E','I','O','U') AND
+RIGHT(UPPER(CITY),1) IN('A','E','I','O','U');
+
+Easy. SQL (Basic)
+Weather Observation Station 9
+Query the list of CITY names from STATION that do not start with vowels. Your result cannot contain duplicates.
+Solución:
+SELECT DISTINCT CITY FROM STATION
+WHERE LEFT(UPPER(CITY),1) NOT IN('A','E','I','O','U');
+
+Easy. SQL (Basic)
+Weather Observation Station 10
+Query the list of CITY names from STATION that do not end with vowels. Your result cannot contain duplicates.
+Solución:
+SELECT DISTINCT CITY FROM STATION
+WHERE RIGHT(UPPER(CITY),1) NOT IN('A','E','I','O','U');
+
+Easy. SQL (Basic)
+Weather Observation Station 11
+Query the list of CITY names from STATION that either do not start with vowels or do not end with vowels. Your result cannot contain duplicates.
+Solución:
+SELECT DISTINCT CITY
+FROM STATION WHERE LEFT(UPPER(CITY),1) NOT IN('A','E','I','O','U')
+OR RIGHT(UPPER(CITY),1) NOT IN('A','E','I','O','U');
+
+Easy. SQL (Basic)
+Weather Observation Station 12
+Query the list of CITY names from STATION that do not start with vowels and do not end with vowels. Your result cannot contain duplicates.
+Solución:
+SELECT DISTINCT CITY FROM STATION
+WHERE LEFT(UPPER(CITY),1) NOT IN('A','E','I','O','U')
+AND RIGHT(UPPER(CITY),1) NOT IN('A','E','I','O','U');
+
+Easy. SQL (Basic)
+Employee Names
+Write a query that prints a list of employee names (i.e.: the name attribute) from the Employee table in alphabetical order.
+Solución:
+SELECT name FROM Employee ORDER BY name;
+
+Easy. SQL (Basic)
+Employee Salaries
+Write a query that prints a list of employee names (i.e.: the name attribute) for employees in Employee having a salary greater than  per month who have been employees for less than  months. Sort your result by ascending employee_id.
+Solución:
+SELECT name FROM Employee
+WHERE salary > 2000 AND months < 10
+ORDER BY employee_id;
+
+Easy. SQL (Basic)
+Type of Triangle
+Write a query identifying the type of each record in the TRIANGLES table using its three side lengths. Output one of the following statements for each record in the table:
+•	Equilateral: It's a triangle with  sides of equal length.
+•	Isosceles: It's a triangle with  sides of equal length.
+•	Scalene: It's a triangle with  sides of differing lengths.
+•	Not A Triangle: The given values of A, B, and C don't form a triangle.
+Solución:
+SELECT IF(A+B>C AND A+C>B AND B+C>A, IF(A=B AND B=C, 'Equilateral', IF(A=B OR B=C OR A=C, 'Isosceles', 'Scalene')), 'Not A Triangle')
+FROM TRIANGLES;
+Medium. SQL (Basic)
+The PADS
+Generate the following two result sets:
+1.	Query an alphabetically ordered list of all names in OCCUPATIONS, immediately followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). For example: AnActorName(A), ADoctorName(D), AProfessorName(P), and ASingerName(S).
+2.	Query the number of ocurrences of each occupation in OCCUPATIONS. Sort the occurrences in ascending order, and output them in the following format:
+There are a total of [occupation_count] [occupation]s.
+where [occupation_count] is the number of occurrences of an occupation in OCCUPATIONS and [occupation] is the lowercase occupation name. If more than one Occupation has the same [occupation_count], they should be ordered alphabetically.
+Note: There will be at least two entries in the table for each type of occupation.
+Solución:
+SELECT CONCAT(NAME,'(',SUBSTRING(OCCUPATION,1,1),')') AS NAME 
+FROM OCCUPATIONS 
+ORDER BY NAME;
+SELECT CONCAT ('There are a total of ', COUNT(OCCUPATION),' ', LOWER(OCCUPATION),'s.') AS TOTALS
+FROM OCCUPATIONS
+GROUP BY OCCUPATION
+ORDER BY TOTALS
+
+
+Medium.
+Occupations
+Pivot the Occupation column in OCCUPATIONS so that each Name is sorted alphabetically and displayed underneath its corresponding Occupation. The output should consist of four columns (Doctor, Professor, Singer, and Actor) in that specific order, with their respective names listed alphabetically under each column.
+Note: Print NULL when there are no more names corresponding to an occupation.
+Solución:
+SET @r1=0, @r2=0, @r3 =0, @r4=0;
+SELECT MIN(Doctor), MIN(Professor), MIN(Singer), MIN(Actor) FROM
+(SELECT CASE Occupation WHEN 'Doctor' THEN @r1:=@r1+1
+                       WHEN 'Professor' THEN @r2:=@r2+1
+                       WHEN 'Singer' THEN @r3:=@r3+1
+                       WHEN 'Actor' THEN @r4:=@r4+1 END
+       AS RowLine,
+       CASE WHEN Occupation = 'Doctor' THEN Name END AS Doctor,
+       CASE WHEN Occupation = 'Professor' THEN Name END AS Professor,
+       CASE WHEN Occupation = 'Singer' THEN Name END AS Singer,
+       CASE WHEN Occupation = 'Actor' THEN Name END AS Actor
+       FROM OCCUPATIONS ORDER BY Name) AS t
+GROUP BY RowLine;
+
+Medium. SQL (Intermediate)
+Binary Tree Nodes
+Write a query to find the node type of Binary Tree ordered by the value of the node. Output one of the following for each node:
+•	Root: If node is root node.
+•	Leaf: If node is leaf node.
+•	Inner: If node is neither root nor leaf node.
+Solución:
+SELECT N,
+IF(P IS NULL, 'Root', IF(B.N IN (SELECT P FROM BST), 'Inner', 'Leaf'))
+FROM BST AS B ORDER BY N;
+
+Medium. SQL (Intermediate)
+New Companies
+Given the table schemas below, write a query to print the company_code, founder name, total number of lead managers, total number of senior managers, total number of managers, and total number of employees. Order your output by ascending company_code.
+Note:
+•	The tables may contain duplicate records.
+•	The company_code is string, so the sorting should not be numeric. For example, if the company_codes are C_1, C_2, and C_10, then the ascending company_codes will be C_1, C_10, and C_2.
+Solución:
+SELECT C.COMPANY_CODE, C.FOUNDER,
+       COUNT(DISTINCT L.LEAD_MANAGER_CODE), COUNT(DISTINCT S.SENIOR_MANAGER_CODE),
+       COUNT(DISTINCT M.MANAGER_CODE), COUNT(DISTINCT E.EMPLOYEE_CODE)
+FROM COMPANY C JOIN LEAD_MANAGER L ON C.COMPANY_CODE = L.COMPANY_CODE JOIN
+     SENIOR_MANAGER S ON L.LEAD_MANAGER_CODE = S.LEAD_MANAGER_CODE JOIN
+     MANAGER M ON S.SENIOR_MANAGER_CODE = M.SENIOR_MANAGER_CODE JOIN
+     EMPLOYEE E ON M.MANAGER_CODE = E.MANAGER_CODE
+GROUP BY C.COMPANY_CODE, C.FOUNDER ORDER BY C.COMPANY_CODE;
+
+Easy. SQL (Basic)
+Revising Aggregations – The Count Function
+Query a count of the number of cities in CITY having a Population larger than 100000.
+Solución:
+SELECT COUNT(ID) FROM CITY
+WHERE POPULATION > 100000;
+
+Easy. SQL (Basic)
+Revising Aggregations – The Sum Function
+Query the total population of all cities in CITY where District is California.
+Solución:
+SELECT SUM(POPULATION) FROM CITY
+WHERE DISTRICT = 'California';
+
+Easy. SQL (Basic)
+Revising Aggregations – Averages
+Query the average population of all cities in CITY where District is California.
+Solución:
+SELECT AVG(POPULATION) FROM CITY
+WHERE DISTRICT = 'California';
+
+Easy. SQL (Basic)
+Average Population
+Query the average population for all cities in CITY, rounded down to the nearest integer.
+Solución:
+SELECT ROUND(AVG(POPULATION))
+FROM CITY;
+
+Easy. SQL (Basic)
+Japan Population
+Query the sum of the populations for all Japanese cities in CITY. The COUNTRYCODE for Japan is JPN.
+Solución:
+SELECT SUM(POPULATION)
+FROM CITY
+WHERE COUNTRYCODE = 'JPN';
+
+Easy. SQL (Basic)
+Population Density Difference
+Query the difference between the maximum and minimum populations in CITY.
+Solución:
+SELECT MAX(POPULATION) - MIN(POPULATION) FROM CITY;
+
+Easy. SQL (Basic)
+The Blunder
+Samantha was tasked with calculating the average monthly salaries for all employees in the EMPLOYEES table, but did not realize her keyboard's  key was broken until after completing the calculation. She wants your help finding the difference between her miscalculation (using salaries with any zeros removed), and the actual average salary.
+Write a query calculating the amount of error (i.e.:  actual – miscalculated average monthly salaries), and round it up to the next integer.
+Solución:
+SELECT CEIL(AVG(Salary) - AVG(REPLACE(Salary, '0', ''))) FROM EMPLOYEES;
+
+Easy. SQL (Basic)
+Top Earners
+We define an employee's total earnings to be their monthly salary * months worked, and the maximum total earnings to be the maximum total earnings for any employee in the Employee table. Write a query to find the maximum total earnings for all employees as well as the total number of employees who have maximum total earnings. Then print these values as  space-separated integers.
+Solución:
+SELECT (months*salary) as earnings, COUNT(*)
+FROM Employee
+GROUP BY earnings
+ORDER BY earnings DESC
+LIMIT 1;
+
+Easy. SQL (Basic)
+Weather Observation Station 2
+Query the following two values from the STATION table:
+1.	The sum of all values in LAT_N rounded to a scale of  2 decimal places.
+2.	The sum of all values in LONG_W rounded to a scale of 2 decimal places.
+Solución:
+SELECT ROUND(SUM(LAT_N), 2), ROUND(SUM(LONG_W), 2)
+FROM STATION;
+
+Easy. SQL (Basic)
+Weather Observation Station 13
+Query the sum of Northern Latitudes (LAT_N) from STATION having values greater than 38.7880 and less than 137.2345. Truncate your answer to  decimal places.
+Solución:
+SELECT ROUND(SUM(LAT_N),4) AS sum_lat
+FROM STATION
+WHERE LAT_N > 38.7880 AND LAT_N < 137.2345;
+
+Easy. SQL (Basic)
+Weather Observation Station 14
+Query the greatest value of the Northern Latitudes (LAT_N) from STATION that is less than 137.2345. Truncate your answer to  decimal places.
+Solución:
+SELECT ROUND(MAX(LAT_N),4) AS max_lat_n
+FROM STATION
+WHERE LAT_N < 137.2345;
+
+Easy. SQL (Basic)
+Weather Observation Station 15
+Query the Western Longitude (LONG_W) for the largest Northern Latitude (LAT_N) in STATION that is less than 137.2345. Round your answer to  decimal places.
+Solución:
+SELECT ROUND(LONG_W, 4)
+FROM STATION
+WHERE LAT_N < 137.2345
+ORDER BY LAT_N DESC
+LIMIT 1;
+
+Easy. SQL (Basic)
+Weather Observation Station 16
+Query the smallest Northern Latitude (LAT_N) from STATION that is greater than 38.7780. Round your answer to 4 decimal places.
+Solución:
+SELECT ROUND(MIN(LAT_N),4)
+FROM STATION
+WHERE LAT_N > 38.7780 ;
+
+Easy. SQL (Basic)
+Weather Observation Station 17
+Query the Western Longitude (LONG_W)where the smallest Northern Latitude (LAT_N) in STATION is greater than 38.7780. Round your answer to 4 decimal places.
+Solución:
+SELECT ROUND(LONG_W, 4)
+FROM STATION
+WHERE LAT_N > 38.7780
+ORDER BY LAT_N
+LIMIT 1;
+
+Medium. SQL (Basic)
+Weather Observation Station 18
+Consider  P1(a,b) and P2(c,d)  to be two points on a 2D plane.
+•	 a happens to equal the minimum value in Northern Latitude (LAT_N in STATION).
+•	b happens to equal the minimum value in Western Longitude (LONG_W in STATION).
+•	c happens to equal the maximum value in Northern Latitude (LAT_N in STATION).
+•	d happens to equal the maximum value in Western Longitude (LONG_W in STATION).
+Query the Manhattan Distance between points P1 and P2 and round it to a scale of 4 decimal places.
+Solución:
+SELECT ROUND((ABS(MIN(LAT_N)-MAX(LAT_N)) + ABS(MIN(LONG_W)-MAX(LONG_W))),4)
+FROM STATION;
+
+Medium. SQL (Basic)
+Weather Observation Station 19
+Consider  P1(a,c) and P2(b,d) to be two points on a 2D plane where (a,b) are the respective minimum and maximum values of Northern Latitude (LAT_N) and (c,d) are the respective minimum and maximum values of Western Longitude (LONG_W) in STATION.
+Query the Euclidedan Distance between points P1 and P2 and format your answer to display 4 decimal digits.
+Solución:
+SELECT ROUND(SQRT(POW(MIN(LAT_N)-MAX(LAT_N),2) + POW(MIN(LONG_W)-MAX(LONG_W),2)),4)
+FROM STATION;
+
+Medium. SQL (Intermediate)
+Weather Observation Station 20
+A median is defined as a number separating the higher half of a data set from the lower half. Query the median of the Northern Latitudes (LAT_N) from STATION and round your answer to 4 decimal places.
+Solución:
+SELECT ROUND(S1.LAT_N, 4)
+FROM STATION AS S1
+WHERE (SELECT ROUND(COUNT(S1.ID)/2) - 1
+       FROM STATION) =
+      (SELECT COUNT(S2.ID)
+       FROM STATION AS S2
+       WHERE S2.LAT_N > S1.LAT_N);
+
+Easy. SQL (Basic)
+African Cities
+Given the CITY and COUNTRY tables, query the names of all cities where the CONTINENT is 'Africa'.
+Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+Solución:
+SELECT CI.NAME
+FROM CITY CI
+JOIN COUNTRY CO
+ON CO.CODE = CI.COUNTRYCODE
+WHERE CONTINENT ='Africa'
+
+Easy. SQL (Basic)
+Average Population of Each Continent
+Given the CITY and COUNTRY tables, query the names of all the continents (COUNTRY.Continent) and their respective average city populations (CITY.Population) rounded down to the nearest integer.
+Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+Solución:
+SELECT CO.CONTINENT, FLOOR(AVG(CI.POPULATION))
+FROM CITY CI
+JOIN COUNTRY CO
+ON CO.CODE = CI.COUNTRYCODE
+GROUP BY CO.CONTINENT;
+
+Medium. SQL (Intermediate)
+The Report
+Ketty gives Eve a task to generate a report containing three columns: Name, Grade and Mark. Ketty doesn't want the NAMES of those students who received a grade lower than 8. The report must be in descending order by grade -- i.e. higher grades are entered first. If there is more than one student with the same grade (8-10) assigned to them, order those particular students by their name alphabetically. Finally, if the grade is lower than 8, use "NULL" as their name and list them by their grades in descending order. If there is more than one student with the same grade (1-7) assigned to them, order those particular students by their marks in ascending order.
+Write a query to help Eve.
+Solución:
+SELECT IF(G.GRADE<8, NULL, S.NAME), G.GRADE, S.MARKS
+FROM STUDENTS AS S
+JOIN GRADES AS G
+ON S.MARKS
+BETWEEN G.MIN_MARK AND G.MAX_MARK
+ORDER BY G.GRADE DESC, S.NAME, S.MARKS;
+
+Medium. SQL (Intermediate)
+Top Competitors
+Julia just finished conducting a coding contest, and she needs your help assembling the leaderboard! Write a query to print the respective hacker_id and name of hackers who achieved full scores for more than one challenge. Order your output in descending order by the total number of challenges in which the hacker earned a full score. If more than one hacker received full scores in same number of challenges, then sort them by ascending hacker_id.
+Solución:
+SELECT H.HACKER_ID, H.NAME
+FROM SUBMISSIONS AS S
+JOIN HACKERS AS H
+ON S.HACKER_ID = H.HACKER_ID
+JOIN CHALLENGES AS C
+ON S.CHALLENGE_ID = C.CHALLENGE_ID
+JOIN DIFFICULTY AS D
+ON C.DIFFICULTY_LEVEL = D.DIFFICULTY_LEVEL
+WHERE S.SCORE = D.SCORE
+GROUP BY H.HACKER_ID, H.NAME
+HAVING COUNT(*)>1
+ORDER BY COUNT(*) DESC, H.HACKER_ID;
+
+Medium. SQL (Intermediate)
+Ollivander's Inventory
+Harry Potter and his friends are at Ollivander's with Ron, finally replacing Charlie's old broken wand.
+Hermione decides the best way to choose is by determining the minimum number of gold galleons needed to buy each non-evil wand of high power and age. Write a query to print the id, age, coins_needed, and power of the wands that Ron's interested in, sorted in order of descending power. If more than one wand has same power, sort the result in order of descending age.
+Solución:
+SELECT ID, AGE, M.COINS_NEEDED, M.POWER FROM
+(SELECT CODE, POWER, MIN(COINS_NEEDED) AS COINS_NEEDED FROM WANDS GROUP BY CODE, POWER) AS M
+JOIN WANDS AS W ON M.CODE = W.CODE AND M.POWER = W.POWER AND M.COINS_NEEDED = W.COINS_NEEDED
+JOIN WANDS_PROPERTY AS P ON M.CODE = P.CODE
+WHERE P.IS_EVIL = 0
+ORDER BY M.POWER DESC, AGE DESC;
+
+Medium. SQL (Intermediate)
+Challenges
+Julia asked her students to create some coding challenges. Write a query to print the hacker_id, name, and the total number of challenges created by each student. Sort your results by the total number of challenges in descending order. If more than one student created the same number of challenges, then sort the result by hacker_id. If more than one student created the same number of challenges and the count is less than the maximum number of challenges created, then exclude those students from the result.
+Solución:
+SELECT C.HACKER_ID, H.NAME, COUNT(C.CHALLENGE_ID) AS CNT
+FROM HACKERS AS H JOIN CHALLENGES AS C ON H.HACKER_ID = C.HACKER_ID
+GROUP BY C.HACKER_ID, H.NAME HAVING
+CNT = (SELECT COUNT(C1.CHALLENGE_ID) FROM CHALLENGES AS C1 GROUP BY C1.HACKER_ID ORDER BY COUNT(*) DESC LIMIT 1) OR
+CNT NOT IN (SELECT COUNT(C2.CHALLENGE_ID) FROM CHALLENGES AS C2 GROUP BY C2.HACKER_ID HAVING C2.HACKER_ID <> C.HACKER_ID)
+ORDER BY CNT DESC, C.HACKER_ID;
+
+Medium. SQL (Intermediate)
+Contest Leaderboard
+You did such a great job helping Julia with her last coding contest challenge that she wants you to work on this one, too!
+The total score of a hacker is the sum of their maximum scores for all of the challenges. Write a query to print the hacker_id, name, and total score of the hackers ordered by the descending score. If more than one hacker achieved the same total score, then sort the result by ascending hacker_id. Exclude all hackers with a total score of 0 from your result.
+Solución:
+SELECT M.HACKER_ID, H.NAME, SUM(M.SCORE) AS TOTAL_SCORE FROM
+(SELECT HACKER_ID, CHALLENGE_ID, MAX(SCORE) AS SCORE FROM SUBMISSIONS GROUP BY HACKER_ID, CHALLENGE_ID) AS M
+JOIN HACKERS AS H ON M.HACKER_ID = H.HACKER_ID
+GROUP BY M.HACKER_ID, H.NAME
+HAVING TOTAL_SCORE > 0
+ORDER BY TOTAL_SCORE DESC, M.HACKER_ID;
+
+Medium. SQL (Intermediate)
+SQL Project Planning
+f the End_Date of the tasks are consecutive, then they are part of the same project. Samantha is interested in finding the total number of different projects completed.
+Write a query to output the start and end dates of projects listed by the number of days it took to complete the project in ascending order. If there is more than one project that have the same number of completion days, then order by the start date of the project.
+Solución:
+SELECT START_DATE, MIN(END_DATE) FROM
+(SELECT START_DATE FROM PROJECTS WHERE START_DATE NOT IN (SELECT END_DATE FROM PROJECTS)) AS S,
+(SELECT END_DATE FROM PROJECTS WHERE END_DATE NOT IN (SELECT START_DATE FROM PROJECTS)) AS E
+WHERE START_DATE < END_DATE
+GROUP BY START_DATE
+ORDER BY DATEDIFF(MIN(END_DATE), START_DATE), START_DATE;
+
+Medium. SQL (Intermediate)
+Placements
+You are given three tables: Students, Friends and Packages. Students contains two columns: ID and Name. Friends contains two columns: ID and Friend_ID (ID of the ONLY best friend). Packages contains two columns: ID and Salary (offered salary in $ thousands per month).
+Write a query to output the names of those students whose best friends got offered a higher salary than them. Names must be ordered by the salary amount offered to the best friends. It is guaranteed that no two students got same salary offer.
+Solución:
+SELECT S.NAME FROM STUDENTS AS S
+JOIN PACKAGES AS SP ON S.ID = SP.ID
+JOIN FRIENDS AS F ON S.ID = F.ID
+JOIN PACKAGES AS FP ON F.FRIEND_ID = FP.ID
+WHERE SP.SALARY < FP.SALARY
+ORDER BY FP.SALARY;
+
+Medium. SQL (Intermediate)
+Symmetric Pairs
+You are given a table, Functions, containing two columns: X and Y.
+Two pairs (X1, Y1) and (X2, Y2) are said to be symmetric pairs if X1 = Y2 and X2 = Y1.
+Write a query to output all such symmetric pairs in ascending order by the value of X. List the rows such that X1 ≤ Y1.
+Solución:
+SELECT F1.X, F1.Y FROM FUNCTIONS AS F1
+WHERE F1.X = F1.Y AND
+(SELECT COUNT(*) FROM FUNCTIONS WHERE X = F1.X AND Y = F1.X) > 1
+UNION
+SELECT F1.X, F1.Y FROM FUNCTIONS AS F1
+WHERE EXISTS(SELECT X, Y FROM FUNCTIONS WHERE F1.X = Y AND F1.Y = X AND F1.X < X)
+ORDER BY X;
+
+Easy. SQL (Advanced)
+Draw The Triangle 1
+P(R) represents a pattern drawn by Julia in R rows. The following pattern represents P(5):
+* * * * * 
+* * * * 
+* * * 
+* * 
+*
+Write a query to print the pattern P(20).
+Solución:
+SET @number = 21;
+SELECT REPEAT('* ', @number := @number - 1)
+FROM information_schema.tables
+LIMIT 20;
+
+Easy. SQL (Advanced)
+Draw The Triangle 2
+P(R) represents a pattern drawn by Julia in R rows. The following pattern represents P(5):
+* 
+* * 
+* * * 
+* * * * 
+* * * * *
+Write a query to print the pattern P(20).
+Solución:
+SET @number = 0;
+SELECT REPEAT('* ', @number := @number+1)
+FROM information_schema.tables
+LIMIT 20;
+
+Medium. SQL (Advanced)
+Print Prime Numbers
+Write a query to print all prime numbers less than or equal to . Print your result on a single line, and use the ampersand () character as your separator (instead of a space).
+For example, the output for all prime numbers  would be:
+2&3&5&7
+Solución:
+SELECT GROUP_CONCAT(NUMB SEPARATOR '&')
+FROM (
+    SELECT @num:=@num+1 as NUMB FROM
+    information_schema.tables t1,
+    information_schema.tables t2,
+    (SELECT @num:=1) tmp
+) tempNum
+WHERE NUMB<=1000 AND NOT EXISTS(
+        SELECT * FROM (
+            SELECT @nu:=@nu+1 as NUMA FROM
+                information_schema.tables t1,
+                information_schema.tables t2,
+                (SELECT @nu:=1) tmp1
+                LIMIT 1000
+            ) tatata
+        WHERE FLOOR(NUMB/NUMA)=(NUMB/NUMA) AND NUMA<NUMB AND NUMA>1
+    )
