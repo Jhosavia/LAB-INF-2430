@@ -1,0 +1,856 @@
+# Beecrowd SQL Problems 
+
+#2602: Basic Select
+Your company is doing a survey of how many customers are registered in the states, however, lacked to raise the data of the state of the 'Rio Grande do Sul'.
+Then, you must show the names of all customers whose state is 'RS'.
+
+Solution:
+
+SELECT name FROM customers WHERE LOWER(state) = 'rs';
+
+#2603: Customer Address
+The company will make an event celebrating the 20th anniversary of the market, and for that we will make a great celebration in the city of Porto Alegre. We also invite all our customers who are enrolled in this city.
+Your job is in having the names and addresses of customers who live in 'Porto Alegre', to deliver the invitations personally.
+
+Solution:
+
+SELECT name, street FROM customers
+WHERE LOWER(city) = 'porto alegre';
+
+#2604: Under 10 or Greater Than 100
+The financial sector of the company needs a report that shows the ID and the name of the products whose price is less than 10 or greater than 100.
+
+Solution:
+
+SELECT	id, name FROM products
+WHERE (price < 10) OR (price > 100);
+
+#2605: Executive Representatives
+The financial sector needs a report on the providers of the products we sell. The reports include all categories, but for some reason, providers of products whose category is the executive, are not in the report.
+Your job is to return the names of the products and providers whose category ID is 6.
+
+Solution:
+
+SELECT products.name, providers.name
+FROM products INNER JOIN providers 
+	ON products.id_providers = providers.id
+	INNER JOIN categories
+	ON products.id_categories = categories.id
+WHERE categories.id = 6;
+
+#2606: Categories
+When the data were migrated to the database, there was a small misunderstanding on the DBA.
+Your boss needs you to select the ID and the name of the products, whose categorie name start with 'super'.
+
+Solution:
+
+SELECT p.id, p.name FROM products AS p
+    INNER JOIN categories AS c
+    ON p.id_categories = c.id
+WHERE LOWER(c.name) LIKE 'super%';
+
+#2607: Providers' City in Alphabetical Order
+Every month the company asks for a report from the cities that providers are registered. So, do a query that returns all the cities of the providers, but in alphabetical order.
+OBS: You must not show repeated cities.
+
+Solution:
+
+SELECT DISTINCT(city) FROM providers ORDER BY city ASC;
+
+#2608: Higher and Lower Price
+The financial sector of our company, wants to know the smaller and higher values of the products, which we sell.
+For this you must display only the highest and lowest price of the products table.
+
+Solution:
+
+SELECT MAX(price),
+	MIN(price) FROM products;
+
+#2609: Products by Categories
+As usual the sales industry is doing an analysis of how many products we have in stock, and you can help them.
+Then your job will display the name and amount of products of each category.
+
+Solution:
+
+SELECT categories.name, SUM(products.amount)
+FROM products
+INNER JOIN categories
+    ON products.id_categories = categories.id
+GROUP BY categories.id
+ORDER BY categories.name;
+
+#2610: Average Value of Products
+In the company that you work is being done a survey on the values of the products that are marketed.
+To help the industry that is doing this survey you should calculate and display the average value of the price of the products.
+OBS: Show the value with two numbers after the period.
+
+Solution:
+
+SELECT ROUND(AVG(price), 2) FROM products;
+
+#2611: Action Movies
+A video store contractor hired her services to catalog her movies. They need you to select the code and the name of the movies whose description of the genre is 'Action'.
+
+Solution:
+
+SELECT movies.id, movies.name FROM movies
+INNER JOIN genres
+    ON movies.id_genres = genres.id
+WHERE genres.description = 'Action';
+
+#2613: Cheap Movies
+In the past the studio has made an event where several movies were on sale, we want to know what movies these were.
+Your job to help us is to select the ID and name of movies whose price is less than 2.00.
+
+Solution:
+
+SELECT movies.id, movies.name FROM movies
+INNER JOIN prices
+    ON movies.id_prices = prices.id
+WHERE prices.value < 2;
+
+#2614: Semptember Rentals
+The video store is making its semi-annual report and needs your help. All you have to do is select the name of the clients and the date of rental, from the rentals made in September 2016.
+
+Solution:
+
+Using WHERE and DATE COMPARISON
+
+SELECT customers.name, rentals.rentals_date FROM rentals
+INNER JOIN customers
+    ON rentals.id_customers = customers.id
+WHERE rentals.rentals_date >= '2016-09-01' 
+	AND rentals.rentals_date < '2016-10-01';
+
+#2615: Expanding the Business
+The video store company has the objectives of creating several franchises spread throughout Brazil. For this we want to know in which cities our customers live.
+For you to help us select the name of all the cities where the rental company has clients. But please do not repeat the name of the city.
+
+Solution:
+
+SELECT DISTINCT city FROM customers;
+
+#2616: No Rental
+The video store company intends to do a promotion for customers who have not yet done any rental.
+Your job is to deliver us the ID and the name of the customers who have not done any rental. Sort the output by ID.
+
+Solution:
+
+SELECT customers.id, customers.name FROM customers
+LEFT JOIN locations 
+    ON customers.id = locations.id_customers
+WHERE locations IS NULL
+ORDER BY customers.id;
+
+#2617: Provider Ajax SA
+The financial sector has encountered some problems in the delivery of one of our providers, the delivery of the products does not match the invoice.
+Your job is to display the name of the products and the name of the provider, for the products supplied by the provider 'Ajax SA'.
+
+Solution:
+
+SELECT products.name, providers.name
+FROM products INNER JOIN providers
+    ON products.id_providers = providers.id
+WHERE providers.name = 'Ajax SA';
+
+#2618: Imported Products
+Our company's import sector needs a report on the import of products from our Sansul providers.
+Your task is to display the name of the products, the name of the supplier and the name of the category, for the products supplied by the supplier 'Sansul SA' and whose category name is 'Imported'.
+
+Solution:
+
+SELECT products.name, providers.name,
+    categories.name FROM products
+INNER JOIN providers
+    ON products.id_providers = providers.id
+INNER JOIN categories
+    ON products.id_categories = categories.id
+WHERE providers.name = 'Sansul SA'
+    AND categories.name = 'Imported';
+
+#2619: Super Luxury
+Our company is looking to make a new contract for the supply of new super luxury products, and for this we need some data of our products.
+Your job is to display the name of the products, the name of the providers and the price, for the products whose price is greater than 1000 and its category is' Super Luxury.
+
+Solution:
+
+SELECT products.name, providers.name,
+    products.price FROM products
+INNER JOIN providers
+    ON products.id_providers = providers.id
+INNER JOIN categories
+    ON products.id_categories = categories.id
+WHERE products.price > 1000
+    AND categories.name = 'Super Luxury';
+
+#2620: Orders in First Half
+Our company is looking to make a new contract for the supply of new super luxury products, and for this we need some data of our products.
+Your job is to display the name of the products, the name of the providers and the price, for the products whose price is greater than 1000 and its category is' Super Luxury.
+
+Solution:
+
+SELECT customers.name, orders.id
+FROM orders
+INNER JOIN customers
+    ON orders.id_customers = customers.id
+WHERE EXTRACT(MONTH FROM orders.orders_date) BETWEEN 1 AND 6 
+	AND EXTRACT(YEAR FROM orders.orders_date) = 2016;
+
+#2621: Amounts Between 10 and 20
+When it comes to delivering the report on how many products the company has in stock, a part of the report has become corrupted, so the stock keeper asked for help, he wants you to display the following data for him.
+Display the name of products whose amount are between 10 and 20 and whose name of the supplier starts with the letter 'P'.
+
+Solution:
+
+SELECT products.name FROM products
+INNER JOIN providers
+    ON products.id_providers = providers.id
+WHERE products.amount BETWEEN 10 AND 20
+    AND providers.name LIKE 'P%';
+
+#2622: Legal Person
+The sales industry wants to make a promotion for all clients that are legal entities. For this you must display the name of the customers that are legal entity.
+
+Solution:
+
+SELECT customers.name FROM legal_person
+INNER JOIN customers
+    ON legal_person.id_customers = customers.id;
+
+#2623: Categories with Various Products
+The sales industry needs a report to know what products are left in stock.
+To help the sales industry, display the product name and category name for products whose amount is greater than 100 and the category ID is 1,2,3,6 or 9. Show the results in ascendent order by category ID.
+
+Solution:
+
+SELECT products.name, categories.name
+FROM products
+INNER JOIN categories
+    ON products.id_categories = categories.id
+WHERE products.amount > 100
+    AND categories.id IN (1, 2, 3, 6, 9)
+ORDER BY categories.id ASC;
+
+#2624: Number of Cities per Customers
+The company board asked you for a simple report on how many cities the company has already reached.
+To do this you must display the number of distinct cities in the customers table.
+
+Solution:
+
+SELECT COUNT(DISTINCT city) FROM customers;
+
+#2625: CPF Validation
+Your company's communications managers want a report on the natural person customer data that is registered in the database. But the old report had a problem. customers CPF data came without validation.
+So your job now is to select all the CPFs of all the customers, and apply a mask on the return of the data.
+The CPF mask looks like: '000.000.000-00'.
+
+Solution:
+
+Using REGEXP_REPLACE
+
+SELECT REGEXP_REPLACE(natural_person.cpf, 
+					  '(.{3})(.{3})(.{3})(.{2})', -- Divides the string in four parts (3-3-3-2 any digits)
+					  '\1.\2.\3-\4') AS cpf -- inserts the "." and "-" between each part
+FROM natural_person
+INNER JOIN customers
+    ON natural_person.id_customers = customers.id;
+
+#2737: Lawyers
+The manager of Mangojata Lawyers requested a report on the current lawyers.
+
+The manager wants you to show him the name of the lawyer with the most clients, the one with the fewest and the client average considering all lawyers.
+OBS: Before presenting the average, show a field called Average to make the report more readable. The average must be presented as an integer.
+
+Solution:
+
+Using CTE (WITH) for practicing purposes.
+
+WITH average_customers AS (
+	SELECT 'Average' as name,
+		CAST(AVG(customers_number) AS integer) as customers_number, 2 AS order_filter
+	FROM lawyers)
+SELECT name, customers_number
+FROM ( SELECT name, customers_number, 1 AS order_filter FROM lawyers
+	WHERE customers_number = (SELECT MAX(customers_number) FROM lawyers)
+		OR customers_number = (SELECT MIN(customers_number) FROM lawyers)
+	UNION ALL (TABLE average_customers) 
+) AS lawyers_customers
+ORDER BY order_filter, customers_number DESC;
+
+#2738: Contest
+The Mars Technology University has Open Positions for researchers. However, the computer responsible for processing the candidates' data is broken. You must present the candidate list, containing the name and final score (with two decimal places of precision) of each candidate. Remember to show the list ordered by score (highest first).
+
+Solution:
+
+SELECT
+    candidate.name,
+    ROUND((((score.math * 2)
+      	    + (score.specific * 3)
+      		+ (score.project_plan * 5))
+     	   / 10)
+		  , 2) AS avg
+FROM score
+INNER JOIN candidate
+    ON score.candidate_id = candidate.id
+ORDER BY avg DESC;
+
+#2739: Payday
+The Central Bank of Financing lost many registers after a server failure that happened last October. The collection dates for the parcels where lost.
+The bank requested your help to select the names and day of month in which each client must pay theirs parcel.
+OBS: The day of month must be an integer.
+
+Solution:
+
+SELECT name, CAST(EXTRACT(DAY from payday) AS integer) AS day FROM loan;
+
+#2740: League
+The International Underground Excavation League is a success between alternative sports, however the staff responsible for organizing the events doesn’t understand computers at all, they only know how to dig and the sport rule set. As such, you were hired to solve the League’s problem.
+Select the three first placed with the initial phrase "Podium: " and select the last two, which will be demoted to a lower league with the initial phrase “Demoted:".
+
+Solution:
+
+SELECT
+	'Podium: ' || team AS name
+FROM league
+WHERE position <= 3
+UNION ALL
+SELECT
+	'Demoted: ' || team AS name
+FROM league
+WHERE position IN (SELECT position
+				   FROM league
+				   ORDER BY position DESC
+				   LIMIT 2);
+
+#2741: Student Grades
+The International Underground Excavation League is a success between alternative sports, however the staff responsible for organizing the events doesn’t understand computers at all, they only know how to dig and the sport rule set. As such, you were hired to solve the League’s problem.
+Select the three first placed with the initial phrase "Podium: " and select the last two, which will be demoted to a lower league with the initial phrase “Demoted:".
+
+Solution:
+
+SELECT
+    'Approved: ' || name AS name,
+	grade
+FROM students
+WHERE grade >= 7
+ORDER BY grade DESC;
+
+#2742: Richard's Multiverse
+Richard is a famous scientist because of his multiverse theory, where he describes every hypothetical set of parallel universes by means of a database. Thanks to that you now have a job..
+As your first task, you must select every Richard from dimensions C875 and C774, together with its existence probability (the famous factor N) with three decimal places of precision.
+Remember that the N factor is calculated by multiplying the omega value by 1,618. The data must be sorted by the least omega value.
+
+Solution:
+
+SELECT
+    life_registry.name,
+    ROUND((life_registry.omega * 1.618), 3) AS "The N Factor"
+FROM life_registry
+INNER JOIN dimensions
+    ON life_registry.dimensions_id = dimensions.id
+WHERE dimensions.name IN ('C875', 'C774')
+    AND LOWER(life_registry.name) LIKE 'richard%'
+ORDER BY life_registry.omega;
+
+#2743: Number of Characters
+The Global Organization of Characters at People’s Names (GOCPN) made a census to figure how many characters people have in theirs names.
+To help OMCNP, you must show the number of characters of each name sorted by decreasing number of characters.
+
+Solution:
+
+SELECT name, LENGTH(name) as length
+FROM people
+ORDER BY length DESC;
+
+#2744: Passwords
+You were hired to be the consultant for a company. Analyzing the database, you noticed that the passwords are stored as text files and, as everyone knows, this is a terrible security practice as they are not encrypted.
+Therefore you must convert every password to the MD5 format. Show the client id, the password before conversion and the new MD5.
+
+Solution:
+
+SELECT id, password,
+    MD5(password) as MD5
+FROM account;
+
+#2745: Taxes
+You are going to the International Personal Tax meeting and your proposal is: every individual with income higher than 3000 must pay a tax to the government, which is 10% of his/her income.
+Show the name and the tax value of each person who earns more than 3000, with two decimal places of precision.
+
+Solution:
+
+SELECT name, ROUND((salary * 0.1), 2) as tax
+FROM people WHERE salary > 3000;
+
+#2746: Viruses
+Viruses are evolving, but new research has proven that by switching some proteins the vaccine becomes unbeatable. The protein H1(Hemagglutinin) when replaced by the X protein (Xenomorphina) has interesting effects against almost every viral disease. Some conspiracists say that after the vaccine’s discovery some strange 3 meters tall creatures were found in the surroundings of the laboratories, but this is clearly a lie.
+Therefore, you must replace every string “H1”( Hemagglutinin ) by 'X' ( Xenomorphina ).
+
+Solution:
+
+SELECT REPLACE(name, 'H1', 'X') FROM virus;
+
+#2988: Cearense Championship
+The Soccer Cearense Championship attracts thousands of fans every year and you work for a newspaper and are in charge to calculate the score table. Show a table with the following rows: the team name, number of matches, victories, defeats, draws, and scores. Knowing that the score is calculated with each victory valuing 3 points, draw valuing 1 and defeat valuing 0. In the end, show your table with the score from the highest to the lowest.
+
+Solution:
+
+SELECT
+    teams.name,
+    COUNT(matches.team_1 + matches.team_2) AS matches,
+    SUM(CASE WHEN (matches.team_1_goals > matches.team_2_goals
+                   AND teams.id = matches.team_1)
+                  OR (matches.team_2_goals > matches.team_1_goals
+                   AND teams.id = matches.team_2) THEN 1 ELSE 0 END) AS victories,
+                   
+    SUM(CASE WHEN (matches.team_1_goals < matches.team_2_goals
+                   AND teams.id = matches.team_1)
+                  OR (matches.team_2_goals < matches.team_1_goals
+                   AND teams.id = matches.team_2) THEN 1 ELSE 0 END) AS defeats,
+                   
+    SUM(CASE WHEN (matches.team_1_goals = matches.team_2_goals
+                   AND teams.id = matches.team_1)
+                  OR (matches.team_2_goals = matches.team_1_goals
+                   AND teams.id = matches.team_2) THEN 1 ELSE 0 END) AS draws,
+    
+	(SUM(CASE WHEN (matches.team_1_goals > matches.team_2_goals
+                    AND teams.id = matches.team_1)
+                   OR (matches.team_2_goals > matches.team_1_goals
+                    AND teams.id = matches.team_2) THEN 3 ELSE 0 END) +
+	 SUM(CASE WHEN (matches.team_1_goals = matches.team_2_goals
+                    AND teams.id = matches.team_1)
+                   OR (matches.team_2_goals = matches.team_1_goals
+                    AND teams.id = matches.team_2) THEN 1 ELSE 0 END)) AS score
+FROM matches
+INNER JOIN teams
+    ON matches.team_1 = teams.id
+    OR matches.team_2 = teams.id
+GROUP BY teams.name
+ORDER BY score DESC;
+
+#2989: Departments and Divisions
+For each department, show the department name, your divisions' name, with your respective average salary and the highest salary for each division. The result must be ordered in a descending way using the average salary.
+Tip: You can use the function COALESCE(check_expression, 0) to substitute some value null for zero; Furthermore, you also can use the function ROUND(value, 2) to show the values with 2 decimal places.
+
+Solution:
+
+	SELECT
+		departamento.nome AS departamento,
+		divisao.nome AS divisao,
+		ROUND(AVG(salarios.salario), 2) AS media,
+		ROUND(MAX(salarios.salario), 2) AS maior
+	FROM (
+		SELECT
+		venc_agrupados.lotacao,
+		venc_agrupados.lotacao_div,
+		ROUND(SUM(total_vencimentos) - COALESCE(SUM(total_descontos), 0), 2) AS salario
+		FROM (
+
+			SELECT
+				empregado.matr,
+				empregado.lotacao,
+				empregado.lotacao_div,
+				COALESCE(SUM(vencimento.valor), 0) AS total_vencimentos
+			FROM empregado
+			LEFT JOIN emp_venc
+				ON empregado.matr = emp_venc.matr
+			LEFT JOIN vencimento
+				ON emp_venc.cod_venc = vencimento.cod_venc
+			GROUP BY empregado.matr, empregado.lotacao, empregado.lotacao_div
+
+			) AS venc_agrupados
+
+			LEFT JOIN (
+
+				SELECT
+					empregado.matr,
+					empregado.lotacao,
+					empregado.lotacao_div,
+					COALESCE(SUM(desconto.valor), 0) AS total_descontos
+				FROM empregado
+				LEFT JOIN emp_desc
+					ON empregado.matr = emp_desc.matr
+				LEFT JOIN desconto
+					ON emp_desc.cod_desc = desconto.cod_desc
+				GROUP BY empregado.matr, empregado.lotacao, empregado.lotacao_div
+
+			) AS desc_agrupados
+				ON venc_agrupados.matr = desc_agrupados.matr
+		GROUP BY venc_agrupados.matr, venc_agrupados.lotacao, venc_agrupados.lotacao_div
+	) AS salarios
+	INNER JOIN departamento
+		ON salarios.lotacao = departamento.cod_dep
+	INNER JOIN divisao
+		ON salarios.lotacao_div = divisao.cod_divisao
+	GROUP BY divisao.nome, departamento.nome
+	ORDER BY media DESC;
+
+#2990: Employees CPF
+Show the CPF, employees (empregados) name and department (departamentos) name of the employees that don't work (trabalha) in any project (projetos). The result must be order by CPF.
+
+Solution:
+
+SELECT
+    empregados.cpf,
+    empregados.enome,
+    departamentos.dnome
+FROM empregados
+INNER JOIN departamentos
+    ON empregados.dnumero = departamentos.dnumero
+LEFT JOIN trabalha
+    ON empregados.cpf = trabalha.cpf_emp
+WHERE trabalha.cpf_emp IS NULL
+ORDER BY empregados.cpf;
+
+#2991: Department Statistics
+For each company department, show the name, the quantity of employees, the salary avarage, the highest salary and the lowest. The result must be order by the salary avarage.
+Tip: You can use the function COALESCE(check_expression , 0) to substitute some value null for zero; Furthermore, you also can use the function ROUND(value, 2) to show the values with 2 decimal places.
+
+Solution:
+
+	SELECT
+		departamento.nome AS "Nome Departamento",
+		COUNT(salarios.lotacao) AS "Numero de Empregados",
+		ROUND(AVG(salarios.salario), 2) AS "Media Salarial",
+		ROUND(MAX(salarios.salario), 2) AS "Maior Salario",
+		CASE WHEN MIN(salarios.salario) = 0.00 THEN 0
+			 ELSE ROUND(MIN(salarios.salario), 2)
+		END AS "Menor Salario"
+	FROM (
+		SELECT
+		venc_agrupados.lotacao,
+		ROUND(SUM(total_vencimentos) - COALESCE(SUM(total_descontos), 0), 2) AS salario
+		FROM (
+
+			SELECT
+				empregado.matr,
+				empregado.lotacao,
+				COALESCE(SUM(vencimento.valor), 0) AS total_vencimentos
+			FROM empregado
+			LEFT JOIN emp_venc
+				ON empregado.matr = emp_venc.matr
+			LEFT JOIN vencimento
+				ON emp_venc.cod_venc = vencimento.cod_venc
+			GROUP BY empregado.matr, empregado.lotacao
+
+			) AS venc_agrupados
+
+			LEFT JOIN (
+
+				SELECT
+					empregado.matr,
+					empregado.lotacao,
+					COALESCE(SUM(desconto.valor), 0) AS total_descontos
+				FROM empregado
+				LEFT JOIN emp_desc
+					ON empregado.matr = emp_desc.matr
+				LEFT JOIN desconto
+					ON emp_desc.cod_desc = desconto.cod_desc
+				GROUP BY empregado.matr, empregado.lotacao
+
+			) AS desc_agrupados
+				ON venc_agrupados.matr = desc_agrupados.matr
+			GROUP BY venc_agrupados.matr, venc_agrupados.lotacao
+		) AS salarios
+	INNER JOIN departamento
+		ON salarios.lotacao = departamento.cod_dep
+	GROUP BY departamento.nome
+	ORDER BY "Media Salarial" DESC;
+
+#2992: Highest Avarage Salary Divisions
+List the department divisions' with the highest average salary inside their departments. The output must show the department name, the division name with the highest average salary of the department and the division average salary. The result must be descending order by average salary.
+Tip: You can use the function COALESCE(check_expression , 0) to substitute some value null for zero; Furthermore, you also can use the function ROUND(value, 2) to show the values with 2 decimal places.
+
+Solution:
+
+WITH media_salarial_por_divisao AS (
+	SELECT
+		salarios.lotacao,
+		salarios.lotacao_div,
+		ROUND(AVG(salarios.salario), 2) AS media
+	FROM (
+		SELECT
+				venc_agrupados.lotacao,
+				venc_agrupados.lotacao_div,
+				ROUND(SUM(total_vencimentos) - COALESCE(SUM(total_descontos), 0), 2) AS salario
+				FROM (
+
+					SELECT
+						empregado.matr,
+						empregado.lotacao,
+						empregado.lotacao_div,
+						COALESCE(SUM(vencimento.valor), 0) AS total_vencimentos
+					FROM empregado
+					LEFT JOIN emp_venc
+						ON empregado.matr = emp_venc.matr
+					LEFT JOIN vencimento
+						ON emp_venc.cod_venc = vencimento.cod_venc
+					GROUP BY empregado.matr, empregado.lotacao, empregado.lotacao_div
+					) AS venc_agrupados
+					LEFT JOIN (
+						SELECT
+							empregado.matr,
+							empregado.lotacao,
+							empregado.lotacao_div,
+							COALESCE(SUM(desconto.valor), 0) AS total_descontos
+						FROM empregado
+						LEFT JOIN emp_desc
+							ON empregado.matr = emp_desc.matr
+						LEFT JOIN desconto
+							ON emp_desc.cod_desc = desconto.cod_desc
+						GROUP BY empregado.matr, empregado.lotacao, empregado.lotacao_div
+					) AS desc_agrupados
+						ON venc_agrupados.matr = desc_agrupados.matr
+				GROUP BY venc_agrupados.matr, venc_agrupados.lotacao, venc_agrupados.lotacao_div
+		) AS salarios
+	GROUP BY salarios.lotacao, salarios.lotacao_div
+)
+SELECT
+	departamento.nome AS departamento,
+	divisao.nome AS divisao,
+	media_salarial_por_divisao.media AS media
+FROM media_salarial_por_divisao
+INNER JOIN departamento
+	ON media_salarial_por_divisao.lotacao = departamento.cod_dep
+INNER JOIN divisao
+	ON media_salarial_por_divisao.lotacao_div = divisao.cod_divisao
+WHERE media IN (SELECT MAX(media) OVER (PARTITION BY lotacao) FROM media_salarial_por_divisao)
+ORDER BY media DESC;
+
+#2993: Most Frequent
+Given a single-column table with integers values, which is the most frequent value, in other words, the statistical mode of the values?
+
+Solution:
+
+Using Subquery/Nested Query and LIMIT.
+
+SELECT amount as most_frequent_value
+FROM (SELECT amount,
+		COUNT(amount) AS frequency_count
+	FROM value_table	
+	GROUP BY amount
+	ORDER BY frequency_count DESC
+	LIMIT 1
+) AS amount_frequency;
+
+#2994: How much earn a Doctor?
+You work in the IT sector for a hospital and need to calculate the payment revenue from each of the doctors. Each doctor earns 150$ per hour plus a percentage that depends on the work shift. For example, the doctor Wellington worked 1 hour in the day shift, and 2 hours in the night shift, therefore his weekly salary will be: ( ( 1 * 150 ) + 1% ) + ( ( 2 * 150 ) + 15% ) = 496.5. Furthermore, you can use the function ROUND(value,1) to show the salary with 1 decimal place e order the result from the highest to lowest salary.
+
+Solution:
+
+Using CTE "salaries"
+
+WITH 
+	c_hour_earns AS (VALUES(150)),
+	salaries AS (		
+		SELECT
+			attendances.id_doctor,
+			ROUND(SUM((attendances.hours * (table c_hour_earns)) 
+					  + (attendances.hours * (table c_hour_earns) * (work_shifts.bonus/100)))
+				  , 1) AS salary
+		FROM attendances
+		INNER JOIN work_shifts
+			ON attendances.id_work_shift = work_shifts.id
+		GROUP BY attendances.id_doctor
+)
+SELECT
+	doctors.name,
+	salaries.salary
+FROM doctors
+INNER JOIN salaries
+	ON doctors.id = salaries.id_doctor
+ORDER BY salary DESC;
+
+#2995: The Sensor Message
+A sensor captures the room temperature each minute. The records also have a marker, which every time that the temperature changes, this marker is increased regarding the last capture. When the sensor store 15 records it prepares a message to send it to the central computer. To reduce the size of the message, the sensor compact the near temperature records and add the number of records that was compacted. Build a query to solve this problem, showing the temperature and the number of matching records.
+
+Solution:
+
+WITH matching_temperatures AS (
+	SELECT temperature,
+		COUNT(temperature) AS matching_count
+	FROM records
+	GROUP BY temperature, mark
+	ORDER BY mark
+)
+SELECT temperature,
+    matching_count AS number_of_records
+FROM matching_temperatures;
+
+#2996: Package Delivery
+You work for a delivery company and need to show urgently the year and the name of all clients that sent and received blue packages or from the year of 2015, and also the address of your sender or receiver is not from Taiwan. Furthermore, you must order the result by the year decreasingly.
+
+Solution:
+
+SELECT
+	packages.year, 
+	senders.name as sender, 
+	receivers.name as receiver
+FROM packages 
+INNER JOIN users AS senders
+     ON packages.id_user_sender = senders.id 
+INNER JOIN users AS receivers
+     ON packages.id_user_receiver = receivers.id
+WHERE (packages.color='blue' or packages.year=2015) AND 
+(senders.address <> 'Taiwan' AND receivers.address <> 'Taiwan')
+ORDER BY packages.year DESC;
+
+#2997: Employees Payment
+For each employee, list the department name, employee name, gross salary, total discounts, and the net salary. The output must be grouped by department and division. In each division, the employees' list must be presented in a decreasingly way by the net salary.
+Tip: You can use the function COALESCE(check_expression , 0) to substitute some value null for zero; Furthermore, you also can use the function ROUND(value, 2) to show the values with 2 decimal places.
+
+Solution:
+
+SELECT
+	departamento.nome AS Departamento,
+	empregado.nome AS Empregado,
+	
+	CASE WHEN composicao_salarios.total_vencimentos = 0.00 THEN 0
+		 ELSE composicao_salarios.total_vencimentos END AS "Salario Bruto",
+		 
+	CASE WHEN composicao_salarios.total_descontos = 0.00 THEN 0
+		 ELSE composicao_salarios.total_descontos END AS "Total Desconto",
+		 
+	CASE WHEN composicao_salarios.salario = 0.00 THEN 0
+		 ELSE composicao_salarios.salario END AS "Salario Liquidoaws"
+FROM (
+	SELECT
+		venc_agrupados.lotacao,
+		venc_agrupados.matr,
+		venc_agrupados.total_vencimentos,
+		desc_agrupados.total_descontos,
+		ROUND(SUM(total_vencimentos) - COALESCE(SUM(total_descontos), 0), 2) AS salario
+	FROM (
+		SELECT
+			empregado.matr,
+			empregado.lotacao,
+			COALESCE(SUM(vencimento.valor), 0) AS total_vencimentos
+		FROM empregado
+		LEFT JOIN emp_venc
+			ON empregado.matr = emp_venc.matr
+		LEFT JOIN vencimento
+			ON emp_venc.cod_venc = vencimento.cod_venc
+		GROUP BY empregado.matr, empregado.lotacao
+		) AS venc_agrupados
+		LEFT JOIN (
+			SELECT
+				empregado.matr,
+				empregado.lotacao,
+				COALESCE(SUM(desconto.valor), 0) AS total_descontos
+			FROM empregado
+			LEFT JOIN emp_desc
+				ON empregado.matr = emp_desc.matr
+			LEFT JOIN desconto
+				ON emp_desc.cod_desc = desconto.cod_desc
+			GROUP BY empregado.matr, empregado.lotacao
+		) AS desc_agrupados
+		ON venc_agrupados.matr = desc_agrupados.matr
+	GROUP BY venc_agrupados.matr, venc_agrupados.lotacao, 
+		venc_agrupados.total_vencimentos, desc_agrupados.total_descontos
+) AS composicao_salarios
+INNER JOIN departamento
+	ON composicao_salarios.lotacao = departamento.cod_dep
+INNER JOIN empregado
+	ON composicao_salarios.matr = empregado.matr
+ORDER BY salario DESC;
+
+#2998: The Payback
+An investment company desire to calculate the client's payback by finding out what month the project's operations are equal to or higher than the initial investment. For example, client Lucas invested 1000$ and only in the third month he got his payback since the sum of all his operations was superior to his investment. On the other hand, client Daniel didn't reach his payback, since his investment was 500$ and the sum of all his operations was 230$. You need to show the client name, his initial investment, the payback month and the payback value (accumulated value - initial investment value). Furthermore, you must show the result order by the highest to lowest payback.
+Solution:
+
+WITH running_operations_returns AS (	
+	SELECT 
+		clients.id,
+		clients.name,
+		clients.investment,
+		operations.month,
+		SUM(profit) OVER (PARTITION BY client_id ORDER BY operations.id) AS running_sum_of_profit,
+		SUM(profit) OVER (PARTITION BY client_id ORDER BY operations.id) - clients.investment AS return
+	FROM operations
+	INNER JOIN clients
+		ON operations.client_id = clients.id
+	ORDER BY operations.client_id, operations.month
+	
+)
+SELECT 
+	payback_month_return.name,
+	running_operations_returns.investment,
+	running_operations_returns.month AS month_of_payback,
+	payback_month_return.return
+FROM (
+	SELECT DISTINCT ON (id)
+		name, investment, return
+	FROM running_operations_returns
+	WHERE return >= 0
+) AS payback_month_return
+INNER JOIN running_operations_returns
+	USING (return )
+ORDER BY return DESC;
+
+#2999: Highest Division Salary
+List the name and net salary of the employees that earn more than the average salary of their division and earn 8000.00 or more. The result must be ordered by lotacao_div column.
+Tip: You can use the function COALESCE(check_expression , 0) to substitute some value null for zero; Furthermore, you also can use the function ROUND(value, 2) to show the values with 2 decimal places.
+
+Solution:
+
+WITH salarios AS (
+	SELECT
+		venc_agrupados.matr,
+		venc_agrupados.lotacao_div,
+		ROUND(SUM(total_vencimentos) - COALESCE(SUM(total_descontos), 0), 2) AS salario
+	FROM (
+		SELECT empregado.matr, empregado.lotacao_div,
+			COALESCE(SUM(vencimento.valor), 0) AS total_vencimentos
+		FROM empregado
+		LEFT JOIN emp_venc
+			ON empregado.matr = emp_venc.matr
+		LEFT JOIN vencimento
+			ON emp_venc.cod_venc = vencimento.cod_venc
+		GROUP BY empregado.matr, empregado.lotacao_div
+	) AS venc_agrupados
+	LEFT JOIN (
+		SELECT
+			empregado.matr,
+			empregado.lotacao_div,
+			COALESCE(SUM(desconto.valor), 0) AS total_descontos
+		FROM empregado
+		LEFT JOIN emp_desc
+			ON empregado.matr = emp_desc.matr
+		LEFT JOIN desconto
+			ON emp_desc.cod_desc = desconto.cod_desc
+		GROUP BY empregado.matr, empregado.lotacao_div
+	) AS desc_agrupados
+	ON venc_agrupados.matr = desc_agrupados.matr
+	GROUP BY venc_agrupados.matr, venc_agrupados.lotacao_div
+),
+	media_salarial_div AS (
+		SELECT
+			lotacao_div,
+			AVG(salario) as salario_medio
+		FROM salarios
+		GROUP BY lotacao_div
+)
+SELECT empregado.nome, salarios.salario FROM salarios
+INNER JOIN media_salarial_div
+	ON salarios.lotacao_div = media_salarial_div.lotacao_div
+	AND salarios.salario > media_salarial_div.salario_medio
+	AND salarios.salario > 8000 -- This is a workaround so it matches the output example (which is innacurate)
+INNER JOIN empregado
+	ON salarios.matr = empregado.matr
+ORDER BY salarios.lotacao_div -- This is a workaround so it matches the output example (which is innacurate);
+
+#3001: Update sem Where
+Your friend Zé Maria is in an ambush because he made an update without a where and end up zeroing all values from the price column. For your luck, the price can be recalculated knowing the product type.
+If the product type is equal to A, the price will be 20.0
+If the product type is equal to B, the price will be 70.0
+If the product type is equal to C, the price will be 530.5
+Your job is to show the name and price of all products. You must show the products in groups by the following order: first, all products form type A, second type B, and lastly the type C. Furthermore, the products in each group (A, B, C) must be printed in descending order by ID.
+
+Solution:
+
+SELECT
+    name AS type,
+    CASE WHEN type = 'A' THEN 20.0
+         WHEN type = 'B' THEN 70.0
+         WHEN type = 'C' THEN 530.5 END AS price
+FROM products
+ORDER BY products.type, id DESC;
